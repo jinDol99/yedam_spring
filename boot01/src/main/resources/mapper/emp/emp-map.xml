@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yedam.app.emp.mapper.EmpMapper">
+	
+	<!-- 전체조회 -->
+	<select id="selectAllList" resultType="EmpVO">
+		SELECT  employee_id
+		       ,first_name
+		       ,last_name
+		       ,email
+		       ,phone_number
+		       ,hire_date
+		       ,job_id
+		       ,salary
+		       ,commission_pct
+		       ,manager_id
+		       ,department_id
+		FROM    employees
+		ORDER BY employee_id
+	</select>
+	
+	
+	<!-- 단건조회 -->
+	<select id="selectInfo" parameterType="EmpVO" resultType="EmpVO">
+		SELECT  employee_id
+		       ,first_name
+		       ,last_name
+		       ,email
+		       ,phone_number
+		       ,hire_date
+		       ,job_id
+		       ,salary
+		       ,commission_pct
+		       ,manager_id
+		       ,department_id
+		FROM    employees
+		WHERE	employee_id = #{employeeId}
+	</select>
+	
+	
+	<!-- 등록 -->
+	<insert id="insertInfo" parameterType="EmpVO">
+		INSERT INTO employees
+					(
+						  employee_id
+						, last_name
+						, email
+						, job_id
+						, hire_date
+						, salary
+					)
+				VALUES
+					(
+						  employees_seq.NEXTVAL 
+						, #{lastName}
+						, #{email}
+						, #{jobId}
+						<choose>
+							<!-- 필드에 값이 있을 경우. 즉 초기값인 null이 아닐 경우 EmpVo.hireDate를 그대로 사용 -->
+							<when test="hireDate != null">
+								, #{hireDate}
+							</when>
+							
+							<!-- 값이 없으면 기본값으로 현재 날짜를 사용 -->
+							<otherwise>
+								, SYSDATE
+							</otherwise>
+						</choose>
+						
+						<if test="salary > 0">
+							, #{salary}					
+						</if>
+					)
+	</insert>
+	
+	
+	<!-- 수정 -->
+	<!-- TODO 파라미터가 두개인게 이게 맞음? -->
+	<update id="updateInfo" parameterType="int">
+		UPDATE	employees
+		SET
+			  last_name = #{emp.lastName}
+			, email		= #{emp.email}
+			, job_id	= #{emp.jobId}
+			<if test="emp.salary > 0">
+				, salary	= #{emp.salary}
+			</if>
+		WHERE	employee_id = #{id}
+	</update>
+	
+	
+	<!-- 삭제 -->
+	<delete id="deleteInfo" parameterType="int">
+		DELETE FROM employees
+		WHERE employee_id = #{eid}
+	</delete>
+
+</mapper>
+
+<!-- 
+	[2-4] mapper을 만들자. src/main/resources 밑에 mapper 폴더 하위에 emp 폴더를 만들고 
+		거기에 [new] - [myBatis]를 선택하여 새로운 xml 파일을 만들면 됨.
+		이렇게까지 번거롭게 하는 이유는 properties 파일의 mybatis.mapper-locations 속성이
+		classpath:mapper/*/*.xml 으로 지정되어 있기 때문에 정확히 디렉터리를 설정해줘야 함.
+		namespace 속성을 잘 입력했으면 ctrl + 클릭으로 Mapper가 잘 적용됬나 확인하는 것도 좋음.
+		
+		
+		
+	[2-5] EmpMapper 인터페이스의 각 메소드명에 맞춰 5개의 CRUD를 작성하자.
+		매개변수가 있다면 parameterType을, 리턴이 있다면 resultType를 잘 하자.
+		id와 메소드명을 일치시키는 것 주의할 것! 
+		
+		
+		
+	[2-6] SQL문을 작성하자. 이때 세미콜론을 제거하는 것과 WHERE 조건처럼 파라미터가 필요한 경우
+		즉, parameterType으로 넘어온 EmpVO 등이 있을 경우 해당 VO의 필드명을 참고하여
+		#{...}에 값을 올바르게 넣는 것에 주의하자.
+		
+	[참고] #{} ${} 의 차이점: #은 자동으로 홑따옴표( ' ' )가 붙고, $는 홑따옴표가 안 붙는 차이가 있음.
+		예를들어 ` WHERE ${keyword} IN '%' || #{job_id} || '%' ` 이런 SQL 문장이 있다면
+		` WHERE search IN % 'IT_FROG' % `로 변환되어짐.
+		
+		
+	
+	[2-8] EmpMapper.java 에서 @Param으로 작성된 별칭을 사용할 땐 #{emp.lastName}처럼
+		` . `을 사용하여 접근할 수 있음. 
+-->
