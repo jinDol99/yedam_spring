@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="contextPath" th:value="${contextPath}">
+<title></title>
+<style>
+
+</style>
+</head>
+<body>
+	<div>
+		<h3>전체 사원 조회</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>No.</th>
+					<th>사원번호</th>
+					<th>이름</th>		<!-- lastName -->
+					<th>입사일자</th>	<!-- yyyy년 MM월 dd일 -->
+					<th>업무</th>
+				</tr>
+			</thead>
+			<tbody>
+				<th:block th:each="info, sts : ${emps}">
+					<!-- 두 번째 변수(sts)로부터 사용 가능한 키워드: index, count, size, even, dd, first, last -->
+					<!-- 반복하고자 하는 태그 -->
+					<tr>
+						<td>[[ ${sts.count} ]]</td>
+						<td th:text="${info.employeeId}"></td>
+						<td th:text="${info.lastName}"></td>
+						<!--/* <td>[[ ${info.hireDate} ]]</td> */-->
+						<td>[[ ${ #dates.format(info.hireDate, 'yyyy년 MM월 yy일') } ]]</td>
+						<td>[[ ${info.jobId} ]]</td>
+					</tr>
+				</th:block>
+			</tbody>
+		</table>
+	</div>
+	<script>
+		// 단건조회 모범답안
+		
+		let trList = document.querySelectorAll('tbody tr');
+		trList.forEach(function(tr) {
+			tr.addEventListener('click', selectInfo)	
+		});
+		
+		// context-path(/yedam 부분)을 가져와 사용해야 함.
+		let ctxPath = document.querySelector('meta[name="contextPath"]').getAttribute('value');
+		
+		function selectInfo(event) {
+			// == 알아두면 좋은 이벤트 관련 용어 ======================================
+			// 필드
+			// target: 진짜로 이벤트가 발생한 태그 => 고정
+			// currentTarget: target을 포함 이벤트 버블링을 통해 전달받은 태그까지 => 유동
+			// 메소드
+			// preventDefault(): 기본 이벤트 핸들러 일시 중지
+			// stopPropagation(): 이벤트 버블링 멈춤
+			// ==========================================================================
+				
+			let selectedTr = event.currentTarget;							// 클릭한 대상의 현재 타겟을 추출함
+			let eid = selectedTr.querySelector('td:nth-of-type(2)').textContent; 	// tr의 자식들 중 2번째의 값 가져옴
+			let url = ctxPath + '/empInfo?employeeId=' + eid;							// eid 값을 활용하여 단건조회 URL을 작성
+			location.href = url;											// 링크 활성화
+			
+		}
+	
+		/*
+		let infoLink = document.querySelectorAll("tbody tr");
+		for (links of infoLink) {
+		    links.addEventListener("click", function(e) {
+		        let eid = e.target.parentElement.children[1].innerHTML;
+		        location.href = '/empInfo?employeeId=' + eid; 
+		    })
+		}
+		*/
+		
+	</script>
+</body>
+</html>
+<!--/* 
+
+[2-15] 타임리프에서	` td:each="info : ${emps}" `를 통해 반복문을 사용할 수 있음.
+
+	[2-15-1] 
+	
+	[2-15-2] 반복문에서 인덱스 번호를 확인하고 싶을 때는 두 번째 변수를 입력하고, 아래와 같이 특정 내장함수를 입력하면 됨
+			<th:block th:each="info, sts : ${emps}">
+				<p>[[ sts.index ]]</p>
+			</th:block>
+
+
+[2-16] 타임리프에서 텍스트(변수)를 출력할 때는 두 가지 방법이 있음.
+	1) 태그의 속성으로 넣는 방법: 		<p th:text="${ ... }">
+	2) 태그 내부에 직접 삽입하는 방법: 	[[ ${ ... } ]]
+
+
+[2-17] 날짜 객체를 출력할 때 원하는 포맷으로 출력하고 싶을 때는 내장함수로 아래처럼 사용하면 됨
+	[[ ${ #dates.format( 변환할_날짜변수 , 'yyyy년 MM월 yy일') } ]]
+
+
+
+
+
+
+
+
+
+*/-->

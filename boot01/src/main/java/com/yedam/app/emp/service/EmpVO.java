@@ -21,7 +21,7 @@ public class EmpVO {
 	private String	phoneNumber;                                                             
 	private Date	hireDate;
 	private String	jobId;
-	private Double	salary;				// 기본적으로 0보다 커야하기 때문에 double이 아닌 Double 타입 사용
+	private Double	salary;				// 기본적으로 체크 제약조건은 0보다 커야하기 때문에 double이 아닌 Double 타입 사용
 	private double	commissionPct;
 	private Integer	managerId;			// 포린키 제약조건으로 인해 int가 아닌 Integer 타입 사용
 	private Integer	departmentId;		// managerId와 동일한 이유

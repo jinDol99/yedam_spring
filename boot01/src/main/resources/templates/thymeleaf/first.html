@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+	<div>
+		<h1>타임리프 테스트</h1>
+		<th:block th:each="num : ${ #numbers.sequence(1, 5) }">	<!-- [3-3] -->
+			<p th:if="${ num % 2  == 0}" th:text="${num}"/>
+		</th:block>
+	</div>
+</body>
+</html>
+
+<!-- 
+	[3-2] 타임리프를 사용할 때는 html 선언부에서 아래와 같은 추가적인 코드를 씀
+<html lang="ko" xmlns:th="https://www.thymeleaf.org">	
+		이 코드는 'th'와 관련된 모든 코
+
+	[3-3] 타임리프의 반복문은 `th:each="임시변수 : 범위"`를 사용하며, 보통 `<th:block>` 태그와 함께 사용됨
+		위 코드를 예로 들면, 내장함수를 사용해 1~5 숫자를 맨들고, num 임시변수에 하나씩 반복하여 할당.
+		th:block 내부의 if문의 조건에 따라 p 태그의 출력 여부를 판단함.
+		결과적으로 num 값이 2, 4를 갖고 있는 <p> 태그만 출력되어짐.
+	
+
+
+
+
+
+
+
+
+ -->

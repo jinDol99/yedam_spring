@@ -75,8 +75,8 @@
 	
 	
 	<!-- 수정 -->
-	<!-- TODO 파라미터가 두개인게 이게 맞음? -->
-	<update id="updateInfo" parameterType="int">
+	<!-- 파라미터가 2개 이상일 경우, parameterType 속성 생략 -->
+	<update id="updateInfo">
 		UPDATE	employees
 		SET
 			  last_name = #{emp.lastName}
