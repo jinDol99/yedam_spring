@@ -32,7 +32,10 @@ public class EmpServiceImpl implements EmpService {
 
 	@Override
 	public int empInsert(EmpVO empVO) {
-		return empMapper.insertInfo(empVO);
+		// return empMapper.insertInfo(empVO);
+		
+		int result = empMapper.insertInfo(empVO);
+		return result == 1 ? empVO.getEmployeeId() : -1;	// insert 작업이 잘 되었으면 해당 employeeId 반환, 아니면 -1 반환
 	}
 
 	@Override	// AJAX => JSON

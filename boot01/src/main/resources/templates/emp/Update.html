@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="~{common/layouts/default_layout}"
+		layout:fragment="Content">
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+	<form name="updateForm" th:object="${emp}">
+		<h3>사원 정보 수정</h3>
+		<div>
+			<label for="eid">사원번호</label>
+			<!-- <input type="text" id="eid" th:value="${emp.employeeId}"> -->
+			<input type="text" id="eid" th:field="*{employeeId}" readonly>
+		</div>
+		<div>
+			<label for="ename">이름</label>
+			<input type="text" id="ename" th:field="*{lastName}">
+		</div>
+		<div>
+			<label for="email">이메일</label>
+			<input type="text" th:field="*{email}">
+		</div>
+		<div>
+			<label for="hDate">입사일</label>
+			<!-- <input type="date" id="hDate" th:value="${ #dates.format(emp.hireDate, 'yyyy-MM-dd') }"> -->
+			<input type="date" id="hDate" th:field="*{hireDate}">
+		</div>
+		<div>
+			<label for="job">업무</label>
+			<input type="text" id="job" th:field="*{jobId}" >
+		</div>
+		<div>
+			<label for="sal">급여</label>
+			<input type="number" id="sal" th:field="*{salary}">
+		</div>
+		<div>
+			<button type="button" id="updateBtn">수정</button>
+		</div>
+	</form>
+	
+	<script>
+		document.getElementById('updateBtn').addEventListener('click', updateEmpAJAX);
+		
+		function updateEmpAJAX(event) {
+			// 1) 보낼 데이터 결정
+			let info = getEmpVO();
+			
+			// 2) AJAX
+			// 	i) QueryString
+			/*
+			fetch('empUpdate', {
+				method : 'post',
+				body: new URLSearchParams(info)		// QueryString으로 변환하는 클래스(함수)
+			})
+			.then(response => response.json())
+			.then(result => {
+				console.log(result);
+			})
+			.catch(err => console.log(err));
+			*/
+			
+			//	ii) JSON => @RequestBody
+			fetch('empUpdate', {
+				method : 'post',
+				// 추가
+				headers : {
+					'Content-type' : 'application/json' 
+				},
+				// 변경
+				body: JSON.stringify(info)
+			})
+			.then(response => response.json())
+			.then(result => {
+				console.log(result);
+			})
+			.catch(err => console.log(err));
+			
+			
+		}
+		
+		function getEmpVO() {
+			// FormData => content-type : multipart/form-data
+			// FOrmData : <form/> 태그를 기준으로 내부에 존재하는 모든 입력태그 일괄처리
+			let formData = new FormData(updateForm);
+			
+			let formObj = {};
+			formData.forEach((value, name) => {
+				console.log(name , value);
+				formObj[name] = value;
+			});
+			console.log(formObj);
+			return formObj;
+		}
+	</script>
+</body>
+</html>
+
+<!-- 
+	[2-23] 이때동안은 컨트롤러로부터 가져온 emp 객체를 ${emp.employee_id} 이런 식으로 가져왔었음.
+		하지만 호출할 때 마다 계속 `emp. ...`를 입력하기엔 귀찮은 경향이 있음.
+		emp를 반복하여 사용할 상위 태그에 ` th:object="${emp}" `를 입력하여 객체를 한번만 저장한 뒤,
+		th:field="*{employeeId}"를 입력하여 emp.employeeId 풀네임을 쓰지 않고 employeeId만 씀으로써
+		호출코드를 간결하게 쓸 수 있음.
+		추가적으로 id를 생략한다면 employeeId가 자동적으로 채워지는 추가기능도 있음
+		
+	
+	
+	[2-24] 
+
+ -->

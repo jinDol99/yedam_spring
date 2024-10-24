@@ -2,6 +2,8 @@ package com.yedam.app.emp.service;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,7 +20,8 @@ public class EmpVO {
 	private String	firstName;
 	private String	lastName;
 	private String	email;
-	private String	phoneNumber;                                                             
+	private String	phoneNumber;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date	hireDate;
 	private String	jobId;
 	private Double	salary;				// 기본적으로 체크 제약조건은 0보다 커야하기 때문에 double이 아닌 Double 타입 사용

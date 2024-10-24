@@ -1,17 +1,71 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org"
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="~{common/layouts/default_layout}"
+		layout:fragment="Content">
 <head>
 <meta charset="UTF-8">
-<meta name="contextPath" th:value="${contextPath}">
 <title></title>
 <style>
+.container {
+	text-align: center;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+th,
+td {
+  padding: 6px 15px;
+}
+th {
+  background: #42444e;
+  color: #fff;
+  text-align: left;
+}
+tr:first-child th:first-child {
+  border-top-left-radius: 6px;
+}
+tr:first-child th:last-child {
+  border-top-right-radius: 6px;
+}
+td {
+  border-right: 1px solid #c6c9cc;
+  border-bottom: 1px solid #c6c9cc;
+}
+td:first-child {
+  border-left: 1px solid #c6c9cc;
+}
+tr:nth-child(even) td {
+  background: #eaeaed;
+}
+tr:last-child td:first-child {
+  border-bottom-left-radius: 6px;
+}
+tr:last-child td:last-child {
+  border-bottom-right-radius: 6px;
+}
 
 </style>
 </head>
 <body>
-	<div>
+	<div class="container">
+	<!--  
+		<nav>
+			<ul class="nav nav-underline">
+			  <li class="nav-item">
+			    <a class="nav-link active" aria-current="page" th:href="@{/empList}">전체조회</a>
+			  </li>
+			  <li class="nav-item">
+			    <a class="nav-link" th:href="@{/empInsert}">등록</a>
+			  </li>
+			</ul>
+		</nav>
+		-->
 		<h3>전체 사원 조회</h3>
-		<table>
+		<table class="container table">
 			<thead>
 				<tr>
 					<th>No.</th>

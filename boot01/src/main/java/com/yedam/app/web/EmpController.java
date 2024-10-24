@@ -68,7 +68,7 @@ public class EmpController {
 		String url = null;
 		if(result > 0) {
 			// 정상 등록
-			url = "redirect:empList";
+			url = "redirect:empInfo?employeeId=" + result;	// 단건조회 페이지로 이동
 		} else {
 			// 등록되지 않음 경우 -> 새로고침
 			url = "redirect:empInsert";
@@ -91,7 +91,7 @@ public class EmpController {
 	
 	//== 수정 - 처리 : POST ==//
 	// 1) AJAX => QueryString
-	@PostMapping("empUpdate")
+	//@PostMapping("empUpdate")
 	@ResponseBody	// AJAX를 처리할 경우 반드시 @ResponseBody 사용해야 함
 					// AJAX는 페이지를 사용하지 않고 데이터만 주고받으니 Model 객체와 페이지 리턴 필요 X
 	public Map<String, Object> empUpdateAJAXQueryString (EmpVO empVO) {
@@ -99,7 +99,7 @@ public class EmpController {
 	}
 	
 	// 2) AJAX => JSON (@RequestBody)
-	//@PostMapping("empUpdate")
+	@PostMapping("empUpdate")
 	@ResponseBody
 	public Map<String, Object> empUpdateAJAXJSON (@RequestBody EmpVO empVO) {
 		return empService.empUpdate(empVO);

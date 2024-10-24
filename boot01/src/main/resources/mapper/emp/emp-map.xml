@@ -39,7 +39,7 @@
 	
 	
 	<!-- 등록 -->
-	<insert id="insertInfo" parameterType="EmpVO">
+	<insert id="insertInfoSeq" parameterType="EmpVO">
 		INSERT INTO employees
 					(
 						  employee_id
@@ -47,11 +47,55 @@
 						, email
 						, job_id
 						, hire_date
+						<if test="salary > 0">
 						, salary
+						</if>
 					)
 				VALUES
 					(
 						  employees_seq.NEXTVAL 
+						, #{lastName}
+						, #{email}
+						, #{jobId}
+						<choose>
+							<!-- 필드에 값이 있을 경우. 즉 초기값인 null이 아닐 경우 EmpVo.hireDate를 그대로 사용 -->
+							<when test="hireDate != null">
+								, #{hireDate}
+							</when>
+							
+							<!-- 값이 없으면 기본값으로 현재 날짜를 사용 -->
+							<otherwise>
+								, SYSDATE
+							</otherwise>
+						</choose>
+						
+						<if test="salary > 0">
+							, #{salary}					
+						</if>
+					)
+	</insert>
+	
+	<!-- Select Key를 활용 -->
+	<insert id="insertInfo" parameterType="EmpVO">
+		<selectKey keyProperty="employeeId" resultType="Integer" order="BEFORE">
+			SELECT 	NVL(MAX(employee_id), 0) + 1
+			FROM	employees
+		</selectKey>
+		
+		INSERT INTO employees
+					(
+						  employee_id
+						, last_name
+						, email
+						, job_id
+						, hire_date
+						<if test="salary > 0">
+							, salary
+						</if>
+					)
+				VALUES
+					(
+						 #{employeeId}
 						, #{lastName}
 						, #{email}
 						, #{jobId}
@@ -124,4 +168,20 @@
 	
 	[2-8] EmpMapper.java 에서 @Param으로 작성된 별칭을 사용할 땐 #{emp.lastName}처럼
 		` . `을 사용하여 접근할 수 있음. 
+		
+		
+	[2-22] DB의 시퀀스를 사용하면 중간에 누락된 값을 재사용할 수 없고, 무조건 숫자 형태만 사용해야한다는 불편함이 있음.
+		이러한 불편함을 해결하기 위해 "SelectKey"라는 것을 사용함.
+		
+	<selectKey keyProperty="employeeId" resultType="Integer" order="BEFORE">
+		SELECT 	NVL(MAX(employee_id), 0) + 1
+		FROM	employees;	
+	</selectKey>
+	
+		시퀀스를 직접 만들어 만들어진 결과를 employeeId에 담는다는 의미의 코드임.
+		여기서 keyProperty와 resultType는 EmpVO의 어떤 컬럼에 담을것인지(VO의 필드 참조),
+		order은  
+		
+		
+		
 -->
