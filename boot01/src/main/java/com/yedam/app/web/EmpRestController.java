@@ -89,9 +89,9 @@ public class EmpRestController {
  		URI(자원만 표기) + Method(GET, POST, PUT, DELETE / 기능을 의미)
  		
  
-	[3-1] 기존 전통 방식의 통신을 사용하지 않고 REST하게. 즉, 화면 구성을 하지 않고 데이터만 JSON 형식으로 보내자.
+	[4-1] 기존 전통 방식의 통신을 사용하지 않고 REST하게. 즉, 화면 구성을 하지 않고 데이터만 JSON 형식으로 보내자.
 	
-	[3-2] REST 방식은 Path Variable 형식을 중점적으로 사용함. URI에서 특정 값을 가져오려면 우선
+	[4-2] REST 방식은 Path Variable 형식을 중점적으로 사용함. URI에서 특정 값을 가져오려면 우선
 		@GetMapping() 안에서 {}을 사용한 후, 메소드의 매개변수에 @PathVariable 어노테이션을 지정함.
 
 
