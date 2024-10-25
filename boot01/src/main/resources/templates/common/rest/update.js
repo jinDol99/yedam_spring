@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function(event){
 
 });
 async function getEmpInfo()  {
-  let emp = await fetch(`http://localhost:8099/yedam/emps/${employeeId}`)
+  let emp = await fetch(`http://localhost:8098/yedam/emps/${employeeId}`)
                   .then(res => res.json())
                   .catch(err => console.log(err));
 
@@ -31,7 +31,7 @@ function updateEmpAJAX(event){
   let info = getFormData();
 
   // 2) AJAX
-  fetch(`http://localhost:8099/yedam/emps/${employeeId}`,{
+  fetch(`http://localhost:8098/yedam/emps/${employeeId}`,{
     method : 'put',
     //추가
     headers : {

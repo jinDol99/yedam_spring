@@ -3,6 +3,7 @@ package com.yedam.app.web;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,14 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yedam.app.emp.service.EmpService;
 import com.yedam.app.emp.service.EmpVO;
 
-//@Controller
+//@Controller + 모든 메소드에 @ResponseBody 적용
 @RestController
+@CrossOrigin()
 public class EmpRestController {
 	private EmpService empService;
 	
 	public EmpRestController(EmpService empService) {
 		this.empService = empService;
 	}
+	
 	/*
 	@GetMapping("empList")
 	public String empList(Model model) {
@@ -73,10 +76,7 @@ public class EmpRestController {
 		return empService.empDelete(employeeId);
 	}
 	
-	
-	
-	
-	
+
 }
 
 /*
@@ -97,11 +97,18 @@ public class EmpRestController {
 
 
 
+/*
+//=============================================================
+//== CROS =====================================================
+
+	[5-1] @CrossOrigin 어노테이션을 통해 CROS 위반에 대한 건을 어느정도 막을 수 있음.
+		요즘은 보안이 중요하니 이는 가능한 해놓자.
 
 
 
 
+//=============================================================
 
 
 
-*/
+ */

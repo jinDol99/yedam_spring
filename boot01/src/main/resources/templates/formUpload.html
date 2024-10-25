@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+	<form th:action="@{/uploadForm}" method="post" enctype="multipart/form-data">
+		<input type="file" name="file">
+		<button type="submit">저장</button>	
+	</form>
+</body>
+</html>
+
+<!-- 
+=============================================
+== Multipart 데이터 활용 ====================
+
+	[7-1] 멀티미디어(첨부파일)을 업로드/다운로드 위해서 multipart를 실습해보자.
+		우선 .properties 에서 아래와 같이 multipartResolver 관련 세팅을 하자.
+	
+	spring.servlet.multipart.file-size-threshold=1MB
+	spring.servlet.multipart.location=C:/Temp
+	spring.servlet.multipart.max-file-size=10MB
+	spring.servlet.multipart.max-request-size=100MB
+	
+	
+	
+	[7-2] 간단하게 HTML을 만들어 UI를 만들자.
+	
+	
+	
+ -->
