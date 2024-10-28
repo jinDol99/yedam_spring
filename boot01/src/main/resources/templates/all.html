@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<!-- Spring Security를 사용하는 순간부터 GET 메소드를 제외한 모든 AJAX 통신에 token이 필요함. 이 CSRF 토큰이 필요할 때 마다 head에 있는 이 토큰값을 활용하면 됨. -->
+<!--
+<meta name="csrf_name" th:value="${_csrf.headerName}">		
+<meta name="csrf_value" th:value="${_csrf.token}">
+-->
+
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+	<h1>메인 페이지 입니다.</h1>
+	<ul>
+		<li><a th:href="@{/user}">일반 사용자용 페이지로</a></li>
+		<li sec:authorize="hasRole('ADMIN')">
+			<a th:href="@{/admin}">관리자 전용 페이지로</a>
+		</li>
+	</ul>
+
+	<th:block sec:authorize="isAuthenticated()">
+		<!-- 로그아웃 된 상태에서는 form 태그를 삭제: thymeleaf springSecurity 활용 -->
+		<p sec:authentication="name"></p>
+		<!-- 로그인 된 상태에서 현재 사용자의 이름과 권한을 출력 -->
+		<p sec:authentication="principal.authorities"></p>
+		<form th:action="@{/logout}" method="post">
+			<button type="submit">로그아웃</button>
+		</form>
+	</th:block>
+</body>
+</html>

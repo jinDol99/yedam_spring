@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yedam.app.security.mapper.UserMapper">
+	<resultMap id="userInfo" type="UserVO">
+		<id column="login_id" property="loginId"/>
+		<result column="password" property="password"/>
+		<result column="full_name" property="fullName"/>
+		<result column="dept_name" property="deptName"/>
+		<collection property="roleName"
+					ofType="java.lang.String"
+					javaType="java.util.ArrayList">
+			<result column="role_name"/>
+		</collection>
+	</resultMap>
+
+	<select id="getUserInfo" resultMap="userInfo">
+		SELECT   login_id
+		        , password
+		        , role_name
+		        , full_name
+		        , dept_name
+		FROM t_user JOIN t_user_role
+		            ON t_user.id = t_user_role.user_id
+		            JOIN t_role
+		            ON t_role.id = t_user_role.role_id
+		WHERE login_id = #{username}
+	
+	</select>
+
+</mapper>
+
+<!-- 
+	resultMap이란?
+	1:n 또는 n:m 형식의 DB 값을 담을 때 사용하는 타입.
+	즉, 아래 쿼리 결과처럼 나머지 값은 다 같은데 한 두개의 행의 값만 다른 경우
+	해당 다른 값을 배열 형식으로 받기 위해 Mybatis의 resultMap을 사용함.
+	
+	LOGIN_ID	PASSWORD	ROLE_NAME	FULL_NAME	DEPT_NAME
+	admin		1234		ROLE_USER	관리자		기획
+	admin		1234		ROLE_ADMIN	관리자		기획
+
+	=> admin, 1234, [ROLE_USER, ROLE_ADMIN], 관리자, 기획
+
+ -->
