@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="https://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title></title>
+</head>
+<body>
+<h1>게시판 전체 조회</h1>
+
+
+<table>
+	<thead>
+		<tr>
+			<th>번호</th>
+			<th>제목</th>
+			<th>내용</th>
+			<th>작성자</th>
+			<th>작성일자</th>
+			<th>수정일자</th>
+			<th>이미지파일</th>
+		</tr>
+	</thead>
+	<tbody>
+		<th:block th:each="board : ${boards}">
+			<tr>
+				<td th:text="${board.bno}"></td>
+				<td th:text="${board.title}"></td>
+				<td th:text="${board.content}"></td>
+				<td th:text="${board.writer}"></td>
+				<td th:text="${board.regdate}"></td>
+				<td th:text="${board.updatedate}"></td>
+				<td th:text="${board.image}"></td>
+			</tr>
+		</th:block>
+	
+	</tbody>
+
+</table>
+</body>
+</html>
